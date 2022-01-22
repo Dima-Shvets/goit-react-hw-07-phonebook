@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import s from './Filter.module.scss';
-import contactsActions from '../../redux/contacts/contacts-actions';
+import * as contactsActions from '../../redux/contacts/contacts-actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { getFilter } from '../../redux/contacts/contacts-selector';
 
@@ -35,7 +35,7 @@ export default function Filter() {
   );
 }
 
-Filter.propTypes = {
-  filter: PropTypes.string.isRequired,
-  updateFilter: PropTypes.func.isRequired,
-};
+// Filter.propTypes = {
+//   filter: PropTypes.string.isRequired,
+//   updateFilter: PropTypes.func.isRequired,
+// };

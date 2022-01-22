@@ -1,13 +1,13 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import s from './ContactList.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import contactsActions from '../../redux/contacts/contacts-actions';
+import contactsOperations from '../../redux/contacts/contacts-operations';
 import { getFilteredContacts } from '../../redux/contacts/contacts-selector';
 
 export default function ContactList() {
   const filteredContacts = useSelector(getFilteredContacts);
   const dispatch = useDispatch();
-  const deleteContact = id => dispatch(contactsActions.deleteContact(id));
+  const deleteContact = id => dispatch(contactsOperations.deleteContact(id));
 
   return (
     <ul>
@@ -29,12 +29,12 @@ export default function ContactList() {
   );
 }
 
-ContactList.propTypes = {
-  filteredContacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    }),
-  ),
-};
+// ContactList.propTypes = {
+//   filteredContacts: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       id: PropTypes.string.isRequired,
+//       name: PropTypes.string.isRequired,
+//       number: PropTypes.string.isRequired,
+//     }),
+//   ),
+// };
