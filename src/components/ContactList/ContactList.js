@@ -1,11 +1,11 @@
 // import PropTypes from 'prop-types';
-import s from './ContactList.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import contactsOperations from '../../redux/contacts/contacts-operations';
-import { getFilteredContacts } from '../../redux/contacts/contacts-selector';
+import s from './ContactList.module.scss';
+
+import { contactsOperations, contactsSelectors } from 'redux/contacts';
 
 export default function ContactList() {
-  const filteredContacts = useSelector(getFilteredContacts);
+  const filteredContacts = useSelector(contactsSelectors.getFilteredContacts);
   const dispatch = useDispatch();
   const deleteContact = id => dispatch(contactsOperations.deleteContact(id));
 

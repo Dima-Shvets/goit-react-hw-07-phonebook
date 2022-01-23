@@ -1,14 +1,15 @@
 // import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+
 import { nanoid } from 'nanoid';
 import s from './Filter.module.scss';
-import * as contactsActions from '../../redux/contacts/contacts-actions';
-import { useSelector, useDispatch } from 'react-redux';
-import { getFilter } from '../../redux/contacts/contacts-selector';
+
+import { contactsActions, contactsSelectors } from 'redux/contacts';
 
 const filterId = nanoid();
 
 export default function Filter() {
-  const filter = useSelector(getFilter);
+  const filter = useSelector(contactsSelectors.getFilter);
   const dispatch = useDispatch();
   const updateFilter = message =>
     dispatch(contactsActions.updateFilter(message));

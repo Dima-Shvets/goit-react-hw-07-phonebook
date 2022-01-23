@@ -1,9 +1,11 @@
 import { useState } from 'react';
-// import PropTypes from 'prop-types';
-import { nanoid } from 'nanoid';
+import { useDispatch, useSelector } from 'react-redux';
 import s from './ContactForm.module.scss';
-import { useDispatch } from 'react-redux';
-import contactsOperations from '../../redux/contacts/contacts-operations';
+
+import { Oval } from 'react-loader-spinner';
+import { nanoid } from 'nanoid';
+
+import { contactsOperations, contactsSelectors } from 'redux/contacts';
 
 const nameInputId = nanoid();
 const numberInputId = nanoid();
@@ -11,11 +13,22 @@ const numberInputId = nanoid();
 export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(contactsSelectors.getContacts);
+  const isAddingContact = useSelector(contactsSelectors.getIsAddingContact);
 
   const dispatch = useDispatch();
 
-  const addContact = contact =>
+  const addContact = contact => {
+    const { name } = contact;
+    const check = contacts.find(contact => contact.name === name);
+
+    if (check) {
+      alert('This contact is already in the list!');
+      return;
+    }
+
     dispatch(contactsOperations.addContact(contact));
+  };
 
   const inputHandler = e => {
     const { value, name } = e.target;
@@ -75,11 +88,19 @@ export default function ContactForm() {
         value={number}
         onChange={inputHandler}
       />
-      <button type="submit">Add contact</button>
+      <button className={s['btn']} type="submit">
+        Add contact
+        {isAddingContact && (
+          <Oval
+            ariaLabel="loading-indicator"
+            height={12}
+            width={12}
+            strokeWidth={5}
+            color="black"
+            secondaryColor="grey"
+          />
+        )}
+      </button>
     </form>
   );
 }
-
-// ContactForm.propTypes = {
-//   addContact: PropTypes.func.isRequired,
-// };

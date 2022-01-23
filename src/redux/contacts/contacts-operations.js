@@ -1,43 +1,41 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import axios from 'axios';
-import {
-  addContactRequest,
-  addContactSuccess,
-  addContactError,
-  deleteContactRequest,
-  deleteContactSuccess,
-  deleteContactError,
-  fetchContactRequest,
-  fetchContactSuccess,
-  fetchContactError,
-} from './contacts-actions';
 
 axios.defaults.baseURL = 'https://61ec45e3f3011500174d212a.mockapi.io';
 
-const fetchContacts = () => dispatch => {
-  dispatch(fetchContactRequest);
+export const fetchContacts = createAsyncThunk(
+  'contacts/fetchContacts',
+  async (_, rejectWithValue) => {
+    try {
+      const { data: contacts } = await axios.get('/contacts');
+      return contacts;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
 
-  axios
-    .get('/contacts')
-    .then(({ data }) => dispatch(fetchContactSuccess(data)))
-    .catch(error => dispatch(fetchContactError(error)));
-};
+export const addContact = createAsyncThunk(
+  'contacts/addContact',
+  async (newContact, rejectWithValue) => {
+    try {
+      const { data: contact } = await axios.post('/contacts', newContact);
+      return contact;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
 
-const addContact = contact => dispatch => {
-  dispatch(addContactRequest);
-
-  axios
-    .post('/contacts', contact)
-    .then(({ data }) => dispatch(addContactSuccess(data)))
-    .catch(error => dispatch(addContactError(error)));
-};
-
-const deleteContact = contactId => dispatch => {
-  dispatch(deleteContactRequest);
-
-  axios
-    .delete(`/contacts/${contactId}`)
-    .then(() => dispatch(deleteContactSuccess(contactId)))
-    .catch(error => dispatch(deleteContactError(error)));
-};
-
-export default { addContact, deleteContact, fetchContacts };
+export const deleteContact = createAsyncThunk(
+  'contacts/deleteContact',
+  async (contactId, rejectWithValue) => {
+    try {
+      await axios.delete(`/contacts/${contactId}`);
+      return contactId;
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  },
+);
